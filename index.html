@@ -319,7 +319,7 @@
       <div id="collections" class="relative z-30 max-w-6xl mx-auto px-4 sm:px-8 mt-12 sm:mt-16 lg:mt-20">
         <div class="relative">
           <!-- 3-Column Frosted Glass Cards Grid -->
-          <div id="category-cards-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
+          <div id="category-cards-grid" class="grid grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
             <!-- Populated dynamically via JS for smooth carousel cycling -->
           </div>
 
@@ -446,7 +446,7 @@
 
       <!-- Overlapping 3-Column Row of Frosted Glass Product Cards -->
       <div class="relative z-20 max-w-6xl mx-auto px-4 sm:px-8 -mt-24 sm:-mt-32">
-        <div id="bottom-products-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
+        <div id="bottom-products-grid" class="grid grid-cols-2 gap-3 sm:gap-5 lg:gap-6">
           <!-- Populated dynamically via JS -->
         </div>
       </div>
@@ -572,6 +572,22 @@
         fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Diamond+Pendants',
         filterTag: 'Diamond Solitaire Pendants',
       },
+      {
+        id: 'cat-bracelets',
+        label: 'Categories',
+        title: 'Bracelets',
+        image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Diamond+Tennis+Bracelet',
+        filterTag: 'Diamond Tennis Bracelets',
+      },
+      {
+        id: 'cat-bangles',
+        label: 'Categories',
+        title: 'Bangles',
+        image: 'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Gold+Chain+Bangle',
+        filterTag: 'Gold Bangles & Chains',
+      },
     ];
 
     // 2. Product Catalog (Used across Featured & Bottom Silk Banner Sections)
@@ -620,6 +636,28 @@
         image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=700&q=85',
         fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Oval+Diamond+Ring',
       },
+      {
+        id: 'prod-5',
+        category: 'Categories',
+        title: 'Rings',
+        subtitle: 'Amethyst Bloom Cocktail Ring',
+        price: 1250,
+        oldPrice: 1590,
+        onSale: true,
+        image: 'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Amethyst+Cocktail+Ring',
+      },
+      {
+        id: 'prod-6',
+        category: 'Categories',
+        title: 'Necklaces',
+        subtitle: 'Cushion Halo Diamond Pendant',
+        price: 1499,
+        oldPrice: 1899,
+        onSale: true,
+        image: 'https://images.unsplash.com/photo-1598560917505-59a3ad559071?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Halo+Diamond+Pendant',
+      },
     ];
 
     // State
@@ -637,11 +675,11 @@
       },
     ];
 
-    // Render Category Cards (3 visible at a time)
+    // Render Category Cards (all visible: 3 per row, 2 rows)
     function renderCategories() {
       const grid = document.getElementById('category-cards-grid');
       const visible = [];
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < categoryItems.length; i++) {
         visible.push(categoryItems[(categoryOffset + i) % categoryItems.length]);
       }
 
@@ -768,13 +806,12 @@
       renderFeaturedProducts();
     }
 
-    // Render Section 5 Bottom Overlapping Products (3 side-by-side: Rings, Rings, Couple Rings)
+    // Render Section 5 Bottom Overlapping Products (2 side-by-side, sliding)
     function renderBottomProducts() {
       const grid = document.getElementById('bottom-products-grid');
       const items = [
         products[bottomOffset % products.length],
         products[(bottomOffset + 1) % products.length],
-        products[(bottomOffset + 2) % products.length],
       ];
       grid.innerHTML = items.map((item) => createProductCardHTML(item, true)).join('');
     }
