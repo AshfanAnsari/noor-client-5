@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURELIA — Luxury Diamond & Fine Jewelry</title>
+  <!-- Google Fonts: Playfair Display for high-fashion serif headings & Plus Jakarta Sans for clean UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            obsidian: '#18181b',
+            champagne: '#e8dcc8',
+            pearl: '#f8f8fa',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Custom Glassmorphism Utilities & Ambient Mesh Layers */
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f3f2ef;
+      color: #1c1c1e;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Mesh Gradient Backdrop for Lower Sections */
+    .ambient-pearl-mesh {
+      background:
+        radial-gradient(circle at 12% 18%, rgba(226, 211, 187, 0.55) 0%, transparent 45%),
+        radial-gradient(circle at 86% 24%, rgba(203, 213, 225, 0.65) 0%, transparent 48%),
+        radial-gradient(circle at 48% 68%, rgba(245, 237, 224, 0.75) 0%, transparent 55%),
+        radial-gradient(circle at 85% 88%, rgba(214, 211, 209, 0.5) 0%, transparent 45%),
+        linear-gradient(180deg, #efeee9 0%, #f7f6f3 50%, #eceae4 100%);
+    }
+
+    /* Dark Frosted Glass Pill (Navbar, Hero Secondary CTA) */
+    .glass-dark-pill {
+      background: rgba(34, 34, 38, 0.42);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      box-shadow:
+        0 10px 30px -5px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.32);
+    }
+
+    /* Luminous Light Frosted Glass Pill (Hero Primary CTA) */
+    .glass-light-pill {
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow:
+        0 8px 24px -4px rgba(0, 0, 0, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 1);
+    }
+
+    /* Frosted Glass Category & Product Cards */
+    .glass-card {
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.74) 0%,
+        rgba(255, 255, 255, 0.54) 100%
+      );
+      backdrop-filter: blur(22px) saturate(175%);
+      -webkit-backdrop-filter: blur(22px) saturate(175%);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      box-shadow:
+        0 20px 42px -12px rgba(24, 24, 27, 0.14),
+        0 4px 14px -2px rgba(24, 24, 27, 0.06),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  background 0.35s ease;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-6px);
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.85) 0%,
+        rgba(255, 255, 255, 0.66) 100%
+      );
+      box-shadow:
+        0 28px 52px -12px rgba(24, 24, 27, 0.2),
+        0 8px 20px -4px rgba(24, 24, 27, 0.08),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+    }
+
+    /* Dark Glass Action Button inside Cards */
+    .glass-btn-charcoal {
+      background: rgba(34, 34, 38, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow:
+        0 6px 16px -4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      transition: all 0.25s ease;
+    }
+
+    .glass-btn-charcoal:hover {
+      background: rgba(18, 18, 21, 0.96);
+      transform: translateY(-1px);
+      box-shadow:
+        0 10px 20px -4px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    /* Frosted Glass Square/Circle Nav Controls */
+    .glass-control-light {
+      background: rgba(255, 255, 255, 0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+      transition: all 0.2s ease;
+    }
+
+    .glass-control-light:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: scale(1.04);
+    }
+
+    /* Dark Satin Silk Wave Banner */
+    .dark-silk-banner {
+      background-color: #0d0d0f;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 20% 25%, rgba(255, 255, 255, 0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 65% 50% at 72% 18%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 90% 45% at 50% 65%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
+        linear-gradient(125deg, #09090b 0%, #242429 28%, #0c0c0e 52%, #29292f 76%, #0b0b0d 100%);
+    }
+
+    /* Subtle product image blend so jewelry looks crisp inside frosted cards */
+    .jewelry-cutout-frame {
+      background: radial-gradient(circle at center, rgba(255, 255, 255, 0.88) 0%, rgba(244, 244, 246, 0.45) 75%, transparent 100%);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f0ec;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c4c2bc;
+      border-radius: 9999px;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-card-swap {
+      animation: fadeSlideUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-zinc-900 selection:text-white">
+
+  <!-- Toast Notification (Replaces alert()) -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Main Page Wrapper -->
+  <div class="min-h-screen w-full ambient-pearl-mesh">
+
+    <!-- =====================================================================
+         1. HERO & FLOATING GLASS NAVIGATION SECTION
+    ====================================================================== -->
+    <header class="relative w-full h-[540px] sm:h-[600px] lg:h-[650px] bg-zinc-900 overflow-visible select-none">
+      <!-- Monochrome / Silver High-Contrast Macro Diamond Ring Hero Background -->
+      <div class="absolute inset-0 overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1920&q=85"
+          alt="Luxury intertwined diamond engagement rings"
+          class="w-full h-full object-cover object-center grayscale contrast-125 brightness-75 scale-105 transition-transform duration-1000"
+          onerror="this.src='https://placehold.co/1920x900/27272a/e4e4e7?text=Diamond+Solitaire+Collection'"
+        />
+        <!-- Moody charcoal-to-silver studio vignette overlay for crisp text contrast -->
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(180deg, rgba(18,18,20,0.72) 0%, rgba(28,28,32,0.42) 45%, rgba(16,16,18,0.82) 100%);"
+        ></div>
+        <!-- Subtle ambient champagne-silver light leak behind frosted nav -->
+        <div
+          class="absolute -top-20 left-1/2 -translate-x-1/2 w-[640px] h-[220px] rounded-full opacity-35 blur-3xl pointer-events-none"
+          style="background: radial-gradient(circle, rgba(255,255,255,0.65) 0%, rgba(212,197,172,0.2) 60%, transparent 100%);"
+        ></div>
+      </div>
+
+      <!-- Top Navigation Bar (Frosted Glass Pill Layout) -->
+      <nav class="relative z-30 max-w-6xl mx-auto px-4 sm:px-8 pt-6 flex items-center justify-between gap-4">
+        <!-- Left: Brand Ribbon Monogram inside Subtle Frosted Circle -->
+        <a
+          href="#"
+          aria-label="Aurelia Home"
+          class="w-11 h-11 rounded-full glass-dark-pill flex items-center justify-center text-white hover:scale-105 transition-transform shrink-0"
+        >
+          <!-- Stylized Cursive/Ribbon Monogram SVG matching reference -->
+          <svg class="w-6 h-6" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 8c-2 4-3 10-1 14 2.2 4.4 9.5 3.5 12.5-1 2.5-3.8 1-8.5-3.5-8.5-4.2 0-7.8 3.6-8.5 7.5" />
+            <path d="M8 21.5c4.5 2.5 11.5 2 16-1.5" stroke-width="1.5" opacity="0.85" />
+          </svg>
+        </a>
+
+        <!-- Center: Floating Frosted Glass Pill Navigation Links -->
+        <div class="hidden md:flex items-center gap-6 lg:gap-8 px-7 py-2.5 rounded-full glass-dark-pill text-[13px] font-medium text-white/90 tracking-wide">
+          <a href="#" class="text-white font-semibold hover:text-champagne transition-colors">Home</a>
+          <button onclick="showToast('Exploring our heritage & craftsmanship')" class="flex items-center gap-1 hover:text-white transition-colors">
+            About Us
+            <svg class="w-3 h-3 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <a href="#collections" class="flex items-center gap-1 hover:text-white transition-colors">
+            Collection
+            <svg class="w-3 h-3 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <button onclick="showToast('Bespoke ring customization studio')" class="flex items-center gap-1 hover:text-white transition-colors">
+            Customization
+            <svg class="w-3 h-3 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <button onclick="showToast('GIA Certified Diamonds, Platinum & 18k Gold')" class="flex items-center gap-1 hover:text-white transition-colors">
+            Materials
+            <svg class="w-3 h-3 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <a href="#footer-contact" class="hover:text-white transition-colors">Contact Us</a>
+        </div>
+
+        <!-- Right: Frosted Glass Pill "My Cart" Button with Live Counter -->
+        <div class="flex items-center gap-2.5">
+          <button
+            onclick="toggleCartDrawer(true)"
+            class="px-4 sm:px-5 py-2.5 rounded-full glass-dark-pill text-white text-[13px] font-medium flex items-center gap-2 hover:bg-white/20 transition-all cursor-pointer"
+          >
+            <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span>My Cart</span>
+            <span
+              id="cart-badge"
+              class="ml-0.5 min-w-[20px] h-5 px-1.5 rounded-full bg-white text-zinc-900 text-[11px] font-bold flex items-center justify-center shadow-sm"
+            >1</span>
+          </button>
+
+          <!-- Mobile Menu Button -->
+          <button
+            onclick="toggleMobileMenu()"
+            aria-label="Toggle Menu"
+            class="md:hidden w-10 h-10 rounded-full glass-dark-pill flex items-center justify-center text-white"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Dropdown Glass Menu -->
+      <div id="mobile-menu" class="hidden md:hidden relative z-30 mx-4 mt-3 p-4 rounded-2xl glass-dark-pill text-white text-sm space-y-2.5">
+        <a href="#" class="block py-1 font-semibold">Home</a>
+        <a href="#collections" class="block py-1 text-white/85">Collection</a>
+        <a href="#featured-diamonds" class="block py-1 text-white/85">Diamonds & Engagement</a>
+        <a href="#perfect-diamond" class="block py-1 text-white/85">Curated Picks</a>
+        <a href="#footer-contact" class="block py-1 text-white/85">Contact Us</a>
+      </div>
+
+      <!-- Hero Left-Aligned Editorial Content -->
+      <div class="relative z-20 max-w-6xl mx-auto px-4 sm:px-8 pt-12 sm:pt-16 lg:pt-20">
+        <div class="max-w-2xl">
+          <h1 class="font-serif text-4xl sm:text-6xl lg:text-[66px] font-normal text-white leading-[1.08] tracking-tight drop-shadow-sm">
+            Discover Your Sparkle
+          </h1>
+          <p class="mt-4 max-w-md text-xs sm:text-sm text-zinc-200/90 leading-relaxed font-normal">
+            Welcoming In The Spring Season With An Enchanting Emerald, Diamond &amp; Gold Dace With Earrings.
+          </p>
+
+          <!-- Hero Dual Frosted Pill CTAs -->
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              href="#featured-diamonds"
+              class="px-6 py-2.5 rounded-full glass-light-pill text-zinc-900 text-xs sm:text-[13px] font-semibold tracking-wide hover:scale-[1.03] transition-transform"
+            >
+              Buy Now
+            </a>
+            <a
+              href="#collections"
+              class="px-6 py-2.5 rounded-full glass-dark-pill text-white text-xs sm:text-[13px] font-medium tracking-wide hover:bg-white/20 transition-all"
+            >
+              Explore
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           2. OVERLAPPING CATEGORY CARDS CAROUSEL (3-COLUMN ROW)
+      ====================================================================== -->
+      <div id="collections" class="relative z-30 max-w-6xl mx-auto px-4 sm:px-8 mt-12 sm:mt-16 lg:mt-20">
+        <div class="relative">
+          <!-- 3-Column Frosted Glass Cards Grid -->
+          <div id="category-cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+            <!-- Populated dynamically via JS for smooth carousel cycling -->
+          </div>
+
+          <!-- Floating Circular Frosted Glass Next-Arrow Button Overlapping Right Edge -->
+          <button
+            onclick="cycleCategories()"
+            aria-label="Next Category"
+            class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-40 w-11 h-11 rounded-full glass-btn-charcoal text-white items-center justify-center shadow-xl cursor-pointer hover:scale-105"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Spacer to accommodate overlapping category cards on mobile/tablet/desktop -->
+    <div class="h-[640px] sm:h-[620px] md:h-[175px] lg:h-[195px]"></div>
+
+    <!-- =====================================================================
+         3. "DIAMONDS & ENGAGEMENT RING" EDITORIAL + PRODUCT SHOWCASE
+    ====================================================================== -->
+    <section id="featured-diamonds" class="relative z-20 max-w-6xl mx-auto px-4 sm:px-8 pt-10 pb-20">
+      <!-- Top-Right Carousel Arrow Controls -->
+      <div class="flex justify-end items-center gap-2.5 mb-5">
+        <button
+          id="featured-prev-btn"
+          onclick="cycleFeaturedProducts(-1)"
+          aria-label="Previous Featured Rings"
+          class="w-10 h-9 rounded-lg glass-control-light text-zinc-400 hover:text-zinc-800 flex items-center justify-center cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+        <button
+          id="featured-next-btn"
+          onclick="cycleFeaturedProducts(1)"
+          aria-label="Next Featured Rings"
+          class="w-10 h-9 rounded-lg glass-btn-charcoal text-white flex items-center justify-center cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Asymmetric Editorial Copy (Left) + 2 Product Cards (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+        <!-- Left Column: Editorial Copy -->
+        <div class="lg:col-span-5 pr-2">
+          <h2 class="font-serif text-3xl sm:text-4xl lg:text-[42px] text-zinc-900 leading-[1.15] tracking-tight">
+            Diamonds &amp;<br />Engagement Ring
+          </h2>
+          <p class="mt-4 text-xs sm:text-[13.5px] text-zinc-600 leading-relaxed">
+            Experience the beauty of diamond jewellery and find your perfect piece for a special occasion. Find the perfect diamond for any special occasion, from engagement rings and wedding bands to anniversary and Christmas gifts
+          </p>
+          <div class="mt-6">
+            <button
+              onclick="showToast('Viewing all 48 certified engagement rings')"
+              class="px-6 py-2.5 rounded-lg glass-btn-charcoal text-white text-xs sm:text-[13px] font-medium tracking-wide cursor-pointer"
+            >
+              More Product
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Two Frosted Glass Product Cards Side-by-Side -->
+        <div id="featured-products-grid" class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         4. "FIND THE PERFECT DIAMOND FOR" DARK SILK BANNER & OVERLAPPING ROW
+    ====================================================================== -->
+    <section id="perfect-diamond" class="relative pt-4 pb-24">
+      <!-- Rich Dark Satin/Silk Wave Texture Banner -->
+      <div class="dark-silk-banner relative w-full pt-12 pb-36 sm:pb-44 overflow-hidden">
+        <!-- Subtle Silk Drape SVG Highlights -->
+        <svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1440 400">
+          <defs>
+            <linearGradient id="silkGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+              <stop offset="50%" stop-color="#a1a1aa" stop-opacity="0.05" />
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.28" />
+            </linearGradient>
+          </defs>
+          <path d="M-100,80 C250,240 520,-40 860,140 C1150,290 1320,60 1560,160 L1560,400 L-100,400 Z" fill="url(#silkGrad1)" />
+          <path d="M-100,210 C320,60 640,310 1020,130 C1280,10 1420,190 1560,120 L1560,400 L-100,400 Z" fill="url(#silkGrad1)" opacity="0.6" />
+        </svg>
+
+        <!-- Banner Header Row -->
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h2 class="font-serif text-2xl sm:text-3xl lg:text-[34px] text-white font-normal tracking-tight">
+            Find The Perfect Diamond For
+          </h2>
+
+          <!-- Frosted Glass Navigation Arrows -->
+          <div class="flex items-center gap-2.5 self-start sm:self-auto">
+            <button
+              onclick="cycleBottomProducts(-1)"
+              aria-label="Previous Curated Diamonds"
+              class="w-10 h-9 rounded-lg glass-dark-pill text-white/80 hover:text-white flex items-center justify-center cursor-pointer transition-all"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </button>
+            <button
+              onclick="cycleBottomProducts(1)"
+              aria-label="Next Curated Diamonds"
+              class="w-10 h-9 rounded-lg glass-light-pill text-zinc-900 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlapping 3-Column Row of Frosted Glass Product Cards -->
+      <div class="relative z-20 max-w-6xl mx-auto px-4 sm:px-8 -mt-24 sm:-mt-32">
+        <div id="bottom-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         5. MINIMAL FROSTED GLASS FOOTER
+    ====================================================================== -->
+    <footer id="footer-contact" class="max-w-6xl mx-auto px-4 sm:px-8 pb-12">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center">
+            <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 8c-2 4-3 10-1 14 2.2 4.4 9.5 3.5 12.5-1 2.5-3.8 1-8.5-3.5-8.5-4.2 0-7.8 3.6-8.5 7.5" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-serif text-lg text-zinc-900 leading-none">Aurelia Fine Jewellery</p>
+            <p class="text-xs text-zinc-500 mt-1">Ethically Sourced GIA Certified Diamonds &amp; Bespoke Gold</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-600 font-medium">
+          <a href="#collections" class="hover:text-zinc-900 transition-colors">Collections</a>
+          <a href="#featured-diamonds" class="hover:text-zinc-900 transition-colors">Engagement</a>
+          <a href="#perfect-diamond" class="hover:text-zinc-900 transition-colors">Bridal Sets</a>
+          <button onclick="toggleCartDrawer(true)" class="hover:text-zinc-900 transition-colors cursor-pointer">Shopping Bag</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- =====================================================================
+       SLIDE-OVER FROSTED GLASS CART DRAWER
+  ====================================================================== -->
+  <div
+    id="cart-backdrop"
+    onclick="toggleCartDrawer(false)"
+    class="fixed inset-0 z-50 bg-zinc-950/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+  ></div>
+
+  <aside
+    id="cart-drawer"
+    class="fixed top-0 right-0 z-50 h-full w-full max-w-md translate-x-full transition-transform duration-350 ease-out p-4 sm:p-5 flex flex-col"
+  >
+    <div class="h-full w-full rounded-3xl bg-white/80 backdrop-blur-2xl border border-white/90 shadow-2xl flex flex-col overflow-hidden">
+      <!-- Drawer Header -->
+      <div class="px-6 py-5 border-b border-zinc-200/70 flex items-center justify-between">
+        <div>
+          <h3 class="font-serif text-2xl text-zinc-900">Your Jewelry Bag</h3>
+          <p class="text-xs text-zinc-500 mt-0.5">Complimentary insured courier delivery</p>
+        </div>
+        <button
+          onclick="toggleCartDrawer(false)"
+          aria-label="Close Cart"
+          class="w-9 h-9 rounded-full bg-zinc-900/5 hover:bg-zinc-900/10 flex items-center justify-center text-zinc-700 transition-colors cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Cart Items List -->
+      <div id="cart-items-container" class="flex-1 overflow-y-auto px-6 py-4 space-y-3.5">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Drawer Footer / Subtotal -->
+      <div class="p-6 bg-white/60 border-t border-zinc-200/70 space-y-4">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-zinc-600 font-medium">Estimated Subtotal</span>
+          <span id="cart-subtotal" class="font-serif text-2xl font-semibold text-zinc-900">$999</span>
+        </div>
+        <button
+          onclick="handleCheckout()"
+          class="w-full py-3.5 rounded-full glass-btn-charcoal text-white text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>Proceed to Private Checkout</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       APPLICATION DATA & INTERACTIVITY SCRIPT
+  ====================================================================== -->
+  <script>
+    // 1. Category Cards Data (Matching Reference + Extra Slide Item)
+    const categoryItems = [
+      {
+        id: 'cat-rings',
+        label: 'Categories',
+        title: 'Rings',
+        image: 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Diamond+Solitaire+Ring',
+        filterTag: 'Solitaire & Pavé Rings',
+      },
+      {
+        id: 'cat-couple',
+        label: 'Categories',
+        title: 'Couple Rings',
+        image: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Couple+Wedding+Bands',
+        filterTag: 'Matching Wedding Bands',
+      },
+      {
+        id: 'cat-earrings',
+        label: 'Categories',
+        title: 'Earrings',
+        image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Garnet+%26+Gold+Earrings',
+        filterTag: 'Gemstone & Gold Drops',
+      },
+      {
+        id: 'cat-necklaces',
+        label: 'Categories',
+        title: 'Necklaces',
+        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Diamond+Pendants',
+        filterTag: 'Diamond Solitaire Pendants',
+      },
+    ];
+
+    // 2. Product Catalog (Used across Featured & Bottom Silk Banner Sections)
+    const products = [
+      {
+        id: 'prod-1',
+        category: 'Categories',
+        title: 'Rings',
+        subtitle: 'Princess Cut Pavé Halo Set',
+        price: 999,
+        oldPrice: 1299,
+        onSale: true,
+        image: 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Princess+Halo+Ring',
+      },
+      {
+        id: 'prod-2',
+        category: 'Categories',
+        title: 'Rings',
+        subtitle: 'Classic Platinum Solitaire',
+        price: 799,
+        oldPrice: 899,
+        onSale: true,
+        image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Platinum+Solitaire',
+      },
+      {
+        id: 'prod-3',
+        category: 'Categories',
+        title: 'Couple Rings',
+        subtitle: 'Eternity Diamond Duo Bands',
+        price: 1149,
+        oldPrice: 1450,
+        onSale: true,
+        image: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Couple+Rings+Set',
+      },
+      {
+        id: 'prod-4',
+        category: 'Categories',
+        title: 'Rings',
+        subtitle: 'Oval Brilliant Rose Gold',
+        price: 1350,
+        oldPrice: 1690,
+        onSale: true,
+        image: 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=700&q=85',
+        fallback: 'https://placehold.co/500x360/f4f4f5/27272a?text=Oval+Diamond+Ring',
+      },
+    ];
+
+    // State
+    let categoryOffset = 0;
+    let featuredOffset = 0;
+    let bottomOffset = 0;
+    let wishlist = new Set(['prod-1']);
+    let cart = [
+      {
+        id: 'prod-1',
+        title: 'Princess Cut Pavé Halo Set',
+        price: 999,
+        image: 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=300&q=80',
+        qty: 1,
+      },
+    ];
+
+    // Render Category Cards (3 visible at a time)
+    function renderCategories() {
+      const grid = document.getElementById('category-cards-grid');
+      const visible = [];
+      for (let i = 0; i < 3; i++) {
+        visible.push(categoryItems[(categoryOffset + i) % categoryItems.length]);
+      }
+
+      grid.innerHTML = visible
+        .map(
+          (item) => `
+          <div class="glass-card animate-card-swap rounded-2xl p-5 flex flex-col justify-between">
+            <div>
+              <span class="block text-[10px] font-medium uppercase tracking-wider text-zinc-400">${item.label}</span>
+              <h3 class="text-lg sm:text-[19px] font-bold text-zinc-900 mt-0.5 tracking-tight">${item.title}</h3>
+            </div>
+
+            <div class="my-4 h-36 sm:h-40 rounded-xl jewelry-cutout-frame flex items-center justify-center overflow-hidden p-2">
+              <img
+                src="${item.image}"
+                alt="${item.title}"
+                onerror="this.src='${item.fallback}'"
+                class="max-h-full w-auto object-contain rounded-lg mix-blend-multiply transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+
+            <div>
+              <button
+                onclick="scrollToCollection('${item.filterTag}')"
+                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-btn-charcoal text-white text-[11px] font-medium cursor-pointer"
+              >
+                <span>Check More Product</span>
+                <span class="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center text-[10px]">→</span>
+              </button>
+            </div>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    function cycleCategories() {
+      categoryOffset = (categoryOffset + 1) % categoryItems.length;
+      renderCategories();
+    }
+
+    function scrollToCollection(tag) {
+      showToast(`Filtered showcase: ${tag}`);
+      document.getElementById('featured-diamonds').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Reusable Product Card Template (Matches Reference Cards in Sections 4 & 5)
+    function createProductCardHTML(product, showCartBtnAlways = true) {
+      const isLiked = wishlist.has(product.id);
+      return `
+        <div class="glass-card animate-card-swap rounded-2xl p-5 flex flex-col justify-between group">
+          <!-- Top Row: Label, Title, Sale Pill & Heart Toggle -->
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="block text-[10px] font-medium uppercase tracking-wider text-zinc-400">${product.category}</span>
+              <h3 class="text-lg font-bold text-zinc-900 mt-0.5 leading-tight">${product.title}</h3>
+              ${
+                product.onSale
+                  ? `<span class="inline-block mt-1.5 px-2.5 py-0.5 rounded-full bg-zinc-800/90 text-white text-[10px] font-semibold tracking-wide">Sale</span>`
+                  : ''
+              }
+            </div>
+
+            <button
+              onclick="toggleWishlist('${product.id}')"
+              aria-label="Toggle Wishlist"
+              class="w-8 h-8 rounded-full bg-white/60 hover:bg-white border border-white/80 flex items-center justify-center transition-transform active:scale-90 cursor-pointer"
+            >
+              <svg
+                class="w-4 h-4 transition-colors ${isLiked ? 'text-rose-500 fill-rose-500' : 'text-zinc-500'}"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Center Product Photography -->
+          <div class="my-3 h-32 sm:h-36 rounded-xl jewelry-cutout-frame flex items-center justify-center overflow-hidden p-2">
+            <img
+              src="${product.image}"
+              alt="${product.subtitle}"
+              onerror="this.src='${product.fallback}'"
+              class="max-h-full w-auto object-contain rounded-lg mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
+
+          <!-- Bottom Row: Pricing & Add To Cart Button -->
+          <div class="pt-1 flex items-center justify-between gap-2">
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-sm sm:text-[15px] font-bold text-zinc-900">$${product.price}</span>
+              <span class="text-[11px] text-zinc-400 line-through">$${product.oldPrice}</span>
+            </div>
+
+            <button
+              onclick="addToCart('${product.id}')"
+              class="${
+                showCartBtnAlways ? 'opacity-100' : 'opacity-90 sm:opacity-0 sm:group-hover:opacity-100'
+              } px-3 py-1.5 rounded-lg glass-btn-charcoal text-white text-[11px] font-medium inline-flex items-center gap-1.5 cursor-pointer transition-opacity"
+            >
+              <span>Add To Cart</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Section 4 Featured Products (2 side-by-side)
+    function renderFeaturedProducts() {
+      const grid = document.getElementById('featured-products-grid');
+      const p1 = products[featuredOffset % products.length];
+      const p2 = products[(featuredOffset + 1) % products.length];
+      grid.innerHTML = createProductCardHTML(p1, true) + createProductCardHTML(p2, false);
+    }
+
+    function cycleFeaturedProducts(dir) {
+      featuredOffset = (featuredOffset + dir + products.length) % products.length;
+      renderFeaturedProducts();
+    }
+
+    // Render Section 5 Bottom Overlapping Products (3 side-by-side: Rings, Rings, Couple Rings)
+    function renderBottomProducts() {
+      const grid = document.getElementById('bottom-products-grid');
+      const items = [
+        products[bottomOffset % products.length],
+        products[(bottomOffset + 1) % products.length],
+        products[(bottomOffset + 2) % products.length],
+      ];
+      grid.innerHTML = items.map((item) => createProductCardHTML(item, true)).join('');
+    }
+
+    function cycleBottomProducts(dir) {
+      bottomOffset = (bottomOffset + dir + products.length) % products.length;
+      renderBottomProducts();
+    }
+
+    // Wishlist Toggle
+    function toggleWishlist(productId) {
+      const product = products.find((p) => p.id === productId);
+      if (wishlist.has(productId)) {
+        wishlist.delete(productId);
+        showToast(`Removed ${product.subtitle} from wishlist`);
+      } else {
+        wishlist.add(productId);
+        showToast(`Saved ${product.subtitle} to wishlist`);
+      }
+      renderFeaturedProducts();
+      renderBottomProducts();
+    }
+
+    // Cart Operations
+    function addToCart(productId) {
+      const product = products.find((p) => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find((item) => item.id === productId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          title: product.subtitle,
+          price: product.price,
+          image: product.image,
+          qty: 1,
+        });
+      }
+      updateCartUI();
+      showToast(`Added "${product.subtitle}" to your bag`);
+    }
+
+    function updateCartQty(productId, delta) {
+      const idx = cart.findIndex((item) => item.id === productId);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const totalCount = cart.reduce((acc, item) => acc + item.qty, 0);
+      const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+
+      document.getElementById('cart-badge').textContent = totalCount;
+      document.getElementById('cart-subtotal').textContent = `$${subtotal.toLocaleString()}`;
+
+      const container = document.getElementById('cart-items-container');
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-12">
+            <div class="w-14 h-14 rounded-full bg-zinc-900/5 flex items-center justify-center text-zinc-400 mb-3">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+            </div>
+            <p class="font-serif text-lg text-zinc-800">Your jewelry bag is empty</p>
+            <p class="text-xs text-zinc-500 mt-1 max-w-xs">Explore our diamond solitaires and eternity rings to add pieces to your collection.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart
+        .map(
+          (item) => `
+          <div class="p-3.5 rounded-2xl bg-white/75 border border-white flex items-center gap-3.5 shadow-sm">
+            <img src="${item.image}" alt="${item.title}" class="w-16 h-16 rounded-xl object-cover bg-zinc-100" />
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xs font-bold text-zinc-900 truncate">${item.title}</h4>
+              <p class="text-xs font-semibold text-zinc-600 mt-0.5">$${item.price.toLocaleString()}</p>
+              <div class="mt-2 inline-flex items-center gap-2.5 bg-zinc-900/5 rounded-full px-2.5 py-0.5">
+                <button onclick="updateCartQty('${item.id}', -1)" class="text-xs font-bold text-zinc-700 hover:text-black cursor-pointer">−</button>
+                <span class="text-xs font-semibold text-zinc-900">${item.qty}</span>
+                <button onclick="updateCartQty('${item.id}', 1)" class="text-xs font-bold text-zinc-700 hover:text-black cursor-pointer">+</button>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-sm font-bold text-zinc-900">$${(item.price * item.qty).toLocaleString()}</span>
+            </div>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-backdrop');
+      if (open) {
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      } else {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function handleCheckout() {
+      if (cart.length === 0) {
+        showToast('Add a diamond piece to your bag first');
+        return;
+      }
+      toggleCartDrawer(false);
+      showToast('Private concierge checkout initiated — thank you!');
+    }
+
+    // Custom Glass Toast Notification
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className =
+        'px-4 py-3 rounded-2xl glass-btn-charcoal text-white text-xs font-medium shadow-xl flex items-center gap-2.5 animate-card-swap';
+      toast.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    // Initialize Page
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCategories();
+      renderFeaturedProducts();
+      renderBottomProducts();
+      updateCartUI();
+    });
+  </script>
+</body>
+</html>
