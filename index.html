@@ -36,6 +36,15 @@
       overflow-x: hidden;
     }
 
+    /* Sideways swipe sliders: hide the scrollbar, keep the scroll */
+    .no-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
     /* Ambient Mesh Gradient Backdrop for Lower Sections */
     .ambient-pearl-mesh {
       background:
@@ -319,7 +328,7 @@
       <div id="collections" class="relative z-30 max-w-6xl mx-auto px-4 sm:px-8 mt-12 sm:mt-16 lg:mt-20">
         <div class="relative">
           <!-- 3-Column Frosted Glass Cards Grid -->
-          <div id="category-cards-grid" class="grid grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
+          <div id="category-cards-grid" class="grid grid-cols-3 gap-2 sm:gap-5 lg:gap-6">
             <!-- Populated dynamically via JS for smooth carousel cycling -->
           </div>
 
@@ -338,7 +347,7 @@
     </header>
 
     <!-- Spacer to accommodate overlapping category cards on mobile/tablet/desktop -->
-    <div class="h-[340px] min-[400px]:h-[380px] sm:h-[620px] md:h-[175px] lg:h-[195px]"></div>
+    <div class="h-[250px] min-[400px]:h-[270px] sm:h-[620px] md:h-[175px] lg:h-[195px]"></div>
 
     <!-- =====================================================================
          3. "DIAMONDS & ENGAGEMENT RING" EDITORIAL + PRODUCT SHOWCASE
@@ -389,7 +398,7 @@
         </div>
 
         <!-- Right Column: Two Frosted Glass Product Cards Side-by-Side -->
-        <div id="featured-products-grid" class="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-5">
+        <div id="featured-products-grid" class="lg:col-span-7 flex gap-3 sm:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-1">
           <!-- Populated dynamically via JS -->
         </div>
       </div>
@@ -446,7 +455,7 @@
 
       <!-- Overlapping 3-Column Row of Frosted Glass Product Cards -->
       <div class="relative z-20 max-w-6xl mx-auto px-4 sm:px-8 -mt-24 sm:-mt-32">
-        <div id="bottom-products-grid" class="grid grid-cols-2 gap-3 sm:gap-5 lg:gap-6">
+        <div id="bottom-products-grid" class="flex gap-3 sm:gap-5 lg:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-1">
           <!-- Populated dynamically via JS -->
         </div>
       </div>
@@ -686,13 +695,13 @@
       grid.innerHTML = visible
         .map(
           (item) => `
-          <div class="glass-card animate-card-swap rounded-2xl p-3 sm:p-5 flex flex-col justify-between">
+          <div class="glass-card animate-card-swap rounded-2xl p-2 sm:p-5 flex flex-col justify-between">
             <div>
-              <span class="block text-[10px] font-medium uppercase tracking-wider text-zinc-400">${item.label}</span>
-              <h3 class="text-sm sm:text-[19px] font-bold text-zinc-900 mt-0.5 tracking-tight">${item.title}</h3>
+              <span class="block text-[8px] sm:text-[10px] font-medium uppercase tracking-wider text-zinc-400">${item.label}</span>
+              <h3 class="text-[13px] leading-[1.15] sm:text-[19px] font-bold text-zinc-900 mt-0.5 tracking-tight">${item.title}</h3>
             </div>
 
-            <div class="my-2 sm:my-4 h-24 sm:h-40 rounded-xl jewelry-cutout-frame flex items-center justify-center overflow-hidden p-1 sm:p-2">
+            <div class="my-1.5 sm:my-4 h-16 sm:h-40 rounded-xl jewelry-cutout-frame flex items-center justify-center overflow-hidden p-1 sm:p-2">
               <img
                 src="${item.image}"
                 alt="${item.title}"
@@ -704,10 +713,10 @@
             <div>
               <button
                 onclick="scrollToCollection('${item.filterTag}')"
-                class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full glass-btn-charcoal text-white text-[10px] sm:text-[11px] font-medium cursor-pointer"
+                class="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full glass-btn-charcoal text-white text-[9px] sm:text-[11px] font-medium cursor-pointer whitespace-nowrap"
               >
-                <span>Check More Product</span>
-                <span class="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center text-[10px]">→</span>
+                <span class="sm:hidden">Check More</span><span class="hidden sm:inline">Check More Product</span>
+                <span class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-white/40 flex items-center justify-center text-[9px] sm:text-[10px]">→</span>
               </button>
             </div>
           </div>
@@ -730,7 +739,7 @@
     function createProductCardHTML(product, showCartBtnAlways = true) {
       const isLiked = wishlist.has(product.id);
       return `
-        <div class="glass-card animate-card-swap rounded-2xl p-3 sm:p-5 flex flex-col justify-between group">
+        <div class="glass-card animate-card-swap rounded-2xl p-3 sm:p-5 flex flex-col justify-between group snap-start shrink-0 basis-[calc(50%-0.5rem)] sm:basis-[calc(50%-0.75rem)]">
           <!-- Top Row: Label, Title, Sale Pill & Heart Toggle -->
           <div class="flex items-start justify-between">
             <div>
@@ -793,32 +802,36 @@
       `;
     }
 
-    // Render Section 4 Featured Products (2 side-by-side)
+    // Render Section 4 Featured Products (2 visible, sideways swipe slider)
     function renderFeaturedProducts() {
       const grid = document.getElementById('featured-products-grid');
-      const p1 = products[featuredOffset % products.length];
-      const p2 = products[(featuredOffset + 1) % products.length];
-      grid.innerHTML = createProductCardHTML(p1, true) + createProductCardHTML(p2, false);
+      const sl = grid.scrollLeft;
+      grid.innerHTML = products.map((p, i) => createProductCardHTML(p, i % 2 === 0)).join('');
+      grid.scrollLeft = sl;
     }
 
     function cycleFeaturedProducts(dir) {
-      featuredOffset = (featuredOffset + dir + products.length) % products.length;
-      renderFeaturedProducts();
+      const grid = document.getElementById('featured-products-grid');
+      const card = grid.firstElementChild;
+      const gap = parseFloat(getComputedStyle(grid).gap) || 12;
+      const step = card ? card.offsetWidth + gap : grid.clientWidth / 2;
+      grid.scrollBy({ left: dir * step, behavior: 'smooth' });
     }
 
-    // Render Section 5 Bottom Overlapping Products (2 side-by-side, sliding)
+    // Render Section 5 Bottom Overlapping Products (2 visible, sideways swipe slider)
     function renderBottomProducts() {
       const grid = document.getElementById('bottom-products-grid');
-      const items = [
-        products[bottomOffset % products.length],
-        products[(bottomOffset + 1) % products.length],
-      ];
-      grid.innerHTML = items.map((item) => createProductCardHTML(item, true)).join('');
+      const sl = grid.scrollLeft;
+      grid.innerHTML = products.map((item) => createProductCardHTML(item, true)).join('');
+      grid.scrollLeft = sl;
     }
 
     function cycleBottomProducts(dir) {
-      bottomOffset = (bottomOffset + dir + products.length) % products.length;
-      renderBottomProducts();
+      const grid = document.getElementById('bottom-products-grid');
+      const card = grid.firstElementChild;
+      const gap = parseFloat(getComputedStyle(grid).gap) || 12;
+      const step = card ? card.offsetWidth + gap : grid.clientWidth / 2;
+      grid.scrollBy({ left: dir * step, behavior: 'smooth' });
     }
 
     // Wishlist Toggle
